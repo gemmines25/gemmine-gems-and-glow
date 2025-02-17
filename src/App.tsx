@@ -15,8 +15,8 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL || '',
-  import.meta.env.VITE_SUPABASE_ANON_KEY || ''
+  'https://oermbvjdjkihizpagobp.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9lcm1idmpkamtpaGl6cGFnb2JwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3ODM3MDEsImV4cCI6MjA1NTM1OTcwMX0.d-Jg55sA8VaPqRTCcmQipAMQLMc5aB-9jejc21WGVBg'
 );
 
 const App = () => (
