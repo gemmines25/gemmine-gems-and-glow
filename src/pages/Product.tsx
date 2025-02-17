@@ -1,34 +1,60 @@
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ShoppingCart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { BottomNavbar } from "@/components/layout/BottomNavbar";
+import { useQuery } from "@tanstack/react-query";
+import { getProduct, addToCart } from "@/lib/supabase";
+import { useUser } from "@supabase/auth-helpers-react";
 
 const Product = () => {
   const { id } = useParams();
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const user = useUser();
   const [selectedImage, setSelectedImage] = useState(0);
 
-  // Temporary mock data - will be replaced with Supabase query
-  const product = {
-    id: "1",
-    name: "Lava Bracelet",
-    category: "Lava",
-    price: 29.99,
-    description: "Experience the grounding energy of natural lava stone with our handcrafted bracelet. Each piece features genuine volcanic lava beads known for their healing and protective properties. Perfect for meditation and everyday wear, this bracelet helps balance emotions and provides strength.",
-    images: ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"],
-    rating: 4.8,
-    reviews: 124,
+  const { data: product, isLoading } = useQuery({
+    queryKey: ["product", id],
+    queryFn: () => getProduct(id!),
+    enabled: !!id,
+  });
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      toast({
+        title: "Please sign in",
+        description: "You need to be signed in to add items to your cart",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    try {
+      await addToCart(user.id, product!.id);
+      toast({
+        title: "Added to cart",
+        description: `${product!.name} has been added to your cart`,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Could not add item to cart",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleAddToCart = () => {
-    toast({
-      title: "Added to cart",
-      description: `${product.name} has been added to your cart`,
-    });
-  };
+  if (isLoading) {
+    return <div className="p-4">Loading...</div>;
+  }
+
+  if (!product) {
+    return <div className="p-4">Product not found</div>;
+  }
 
   return (
     <div className="pb-20">
