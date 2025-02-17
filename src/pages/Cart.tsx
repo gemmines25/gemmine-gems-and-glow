@@ -10,7 +10,7 @@ import { BottomNavbar } from "@/components/layout/BottomNavbar";
 interface CartItem {
   id: string;
   quantity: number;
-  product: {
+  products: {
     id: string;
     name: string;
     price: number;
@@ -33,7 +33,7 @@ const Cart = () => {
   const loadCartItems = async () => {
     try {
       const data = await getCartItems(user!.id);
-      setItems(data as CartItem[]);
+      setItems(data as unknown as CartItem[]);
     } catch (error) {
       toast({
         title: "Error",
@@ -77,7 +77,7 @@ const Cart = () => {
     }
   };
 
-  const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const total = items.reduce((sum, item) => sum + item.products.price * item.quantity, 0);
 
   if (loading) {
     return <div className="p-4">Loading...</div>;
@@ -97,14 +97,14 @@ const Cart = () => {
             {items.map((item) => (
               <div key={item.id} className="flex gap-4 border rounded-lg p-4">
                 <img
-                  src={item.product.images[0]}
-                  alt={item.product.name}
+                  src={item.products.images[0]}
+                  alt={item.products.name}
                   className="w-24 h-24 object-cover rounded-md"
                 />
                 <div className="flex-1">
-                  <h3 className="font-semibold">{item.product.name}</h3>
+                  <h3 className="font-semibold">{item.products.name}</h3>
                   <p className="text-primary font-bold mt-1">
-                    ${item.product.price}
+                    ${item.products.price}
                   </p>
                   <div className="flex items-center gap-2 mt-2">
                     <Button

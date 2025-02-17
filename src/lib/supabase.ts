@@ -2,8 +2,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { Database } from './supabase-types'
 
-const supabaseUrl = 'https://YOUR_PROJECT_URL.supabase.co'
-const supabaseAnonKey = 'YOUR_ANON_KEY'
+const supabaseUrl = process.env.SUPABASE_URL || ''
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || ''
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
 

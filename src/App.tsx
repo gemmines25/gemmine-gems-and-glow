@@ -15,8 +15,8 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 const supabase = createClient(
-  'YOUR_SUPABASE_URL',
-  'YOUR_SUPABASE_ANON_KEY'
+  process.env.SUPABASE_URL || '',
+  process.env.SUPABASE_ANON_KEY || ''
 );
 
 const App = () => (
