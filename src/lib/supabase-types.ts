@@ -7,9 +7,29 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export type Database = {
+export interface Database {
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          id: string
+          full_name: string | null
+          avatar_url: string | null
+          created_at: string
+        }
+        Insert: {
+          id: string
+          full_name?: string | null
+          avatar_url?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          full_name?: string | null
+          avatar_url?: string | null
+          created_at?: string
+        }
+      }
       products: {
         Row: {
           id: string
@@ -57,7 +77,7 @@ export type Database = {
           id?: string
           user_id: string
           product_id: string
-          quantity: number
+          quantity?: number
           created_at?: string
         }
         Update: {
